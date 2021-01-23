@@ -3,6 +3,7 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
+import javax.persistence.Persistence;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("DROP TABLE Users");
+            PreparedStatement statement = connection.prepareStatement("DROP TABLE Users");
+            statement.execute();
         } catch (SQLSyntaxErrorException sqlSyntaxErrorException) {
             System.out.println("Table not exist");
 
@@ -60,9 +61,11 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
+
         ArrayList<User> results= new ArrayList<>();
         try(Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT  Name, LastName, Age FROM Users");
+
             while (rs.next()) {
                 String name = rs.getString("Name");
                 String lastName = rs.getString("LastName");

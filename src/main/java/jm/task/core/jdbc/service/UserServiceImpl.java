@@ -12,8 +12,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
-    public UserServiceImpl() {
-        userDao = new UserDaoHibernateImpl();
+    public UserServiceImpl(UserDao userDao) throws ClassNotFoundException {
+        this.userDao = userDao;
     }
 
     public void createUsersTable()  {
